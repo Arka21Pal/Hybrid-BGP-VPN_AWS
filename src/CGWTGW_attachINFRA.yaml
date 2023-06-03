@@ -1,0 +1,105 @@
+Description: Customer Gateways for ON PREM routers for us-east-1, TGW Attachments for AWS VPC TGW for us-east-1.
+
+# Define parameters
+Parameters:
+  CGWName1:
+    Description: Name of ON-PREM router 1
+    Type: "String"
+    Default: "ONPREM-ROUTER1"
+  CGWName2:
+    Description: Name of ON-PREM router 2
+    Type: "String"
+    Default: "ONPREM-ROUTER2"
+  BGPASN:
+    Description: BGP ASN for Routers
+    Type: "Number"
+    Default: 65016
+  BGPVPNINFRAstack:
+    Description: Stack name for initial infrastructure "BGPVPNINFRA"
+    Type: "String"
+    Default: "ADVANCEDVPNDEMO"
+
+# ---------------------
+
+Resources:
+
+  # Customer Gateway Router 1, ON-prem
+  CGWROUTER1:
+    Type: AWS::EC2::CustomerGateway
+    Properties:
+      BgpAsn: !Ref BGPASN
+      DeviceName: !Ref CGWName1
+      IpAddress:
+        Fn::ImportValue:
+          Fn::Sub: "${BGPVPNINFRAstack}-ONPREMRouter1PublicIp"
+      Tags:
+        - Key: "Reason"
+          Value: "CGW-ONPREM-ROUTER1"
+      Type: "ipsec.1"
+
+  # Customer Gateway Router 2, ON-prem
+  CGWROUTER2:
+    Type: AWS::EC2::CustomerGateway
+    Properties:
+      BgpAsn: !Ref BGPASN
+      DeviceName: !Ref CGWName2
+      IpAddress:
+        Fn::ImportValue:
+          Fn::Sub: "${BGPVPNINFRAstack}-ONPREMRouter2PublicIp"
+      Tags:
+        - Key: "Reason"
+          Value: "CGW-ONPREM-ROUTER2"
+      Type: "ipsec.1"
+
+# Sourced from https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-vpnconnection.html
+# AWS is a bit strange, this is not labelled as TGW attachments in their API/Cloudformation commands, but it is considered an attachment in the web UI.
+
+  # TGW VPN attachment 1
+  TGWVPNATTACHMENT1:
+    Type: AWS::EC2::VPNConnection
+    Properties:
+      CustomerGatewayId: !Ref CGWROUTER1
+      StaticRoutesOnly: false
+      Tags:
+        - Key: "Reason"
+          Value: "AWS_TGW_VPN_attachment_1"
+      TransitGatewayId:
+        Fn::ImportValue:
+          Fn::Sub: "${BGPVPNINFRAstack}-AWSTGWId"
+      Type: "ipsec.1"
+
+  # TGW VPN attachment 2
+  TGWVPNATTACHMENT2:
+    Type: AWS::EC2::VPNConnection
+    Properties:
+      CustomerGatewayId: !Ref CGWROUTER2
+      StaticRoutesOnly: false
+      Tags:
+        - Key: "Reason"
+          Value: "AWS_TGW_VPN_attachment_2"
+      TransitGatewayId:
+        Fn::ImportValue:
+          Fn::Sub: "${BGPVPNINFRAstack}-AWSTGWId"
+      Type: "ipsec.1"
+
+# ---------------
+
+Outputs:
+  CGWROUTER1ID:
+    Description: ID of CGWROUTER1
+    Value: !GetAtt CGWROUTER1.CustomerGatewayId
+#     Export:
+#       Name:
+#         Fn::Sub: "${AWS::StackName}-CGWROUTER1CustomerGatewayId"
+  CGWROUTER2ID:
+    Description: ID of CGWROUTER2
+    Value: !GetAtt CGWROUTER2.CustomerGatewayId
+#     Export:
+#       Name:
+#         Fn::Sub: "${AWS::StackName}-CGWROUTER2CustomerGatewayId"
+  TGWVPNATTACHMENT1Id:
+    Description: TGW VPN attachment 1 VpnConnectionId
+    Value: !GetAtt TGWVPNATTACHMENT1.VpnConnectionId
+  TGWVPNATTACHMENT2Id:
+    Description: TGW VPN attachment 2 VpnConnectionId
+    Value: !GetAtt TGWVPNATTACHMENT2.VpnConnectionId
