@@ -20,5 +20,5 @@ To destroy all online (available) resources, I use
 i=0; while [ $i -le 25 ]; do ./../CGWTGWAttach.sh -D && ./../ADVANCEDVPNDEMO.sh -D; printf "%s\n" "round ${i}"; i=$(( i + 1 )); sleep 5; done
 ```
 
-I have to do this because ADVANCEDVPNDEMO.sh won't delete itself until CGWTGWAttach.sh has been completely deleted.
+I have to do this because the stack ADVANCEDVPNDEMO won't delete itself until the stack CGWTGWAttach has been completely deleted.
 
