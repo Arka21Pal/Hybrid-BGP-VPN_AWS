@@ -20,7 +20,7 @@ The command to run the project is (from `/bin`):
 ```
 The `-d` flag signifies "deploy". This command deploys the "ADVANCEDVPNDEMO" template, then the "CGWTGWAttach" template, and then configures the on-prem routers from commands in `CONFIGURATION_IPSEC_BGP.sh`.
 
-After the configuration is complete (to check, go into ON-PREM ROUTER1 or ON-PREM ROUTER 2) and check the last reboot timestamp with `last reboot`. If it has already rebooted once, type `vtysh -c 'show ip route'` to check if the BGP routes are up. Do not forget to substitute the variables "region" and "profile" in the cloudformation templates with your own values.
+After the configuration is complete (head over to either ON-PREM ROUTER1 or ON-PREM ROUTER 2), check the last reboot timestamp with `last reboot`. If it has already rebooted once, type `vtysh -c 'show ip route'` to check if the BGP routes are up. Do not forget to substitute the variables "region" and "profile" in the cloudformation templates with your own values.
 
 `draft.sh` is an empty template which I used for the two other shell scripts for deployment.
 
