@@ -17,7 +17,7 @@ After the configuration is complete (to check, go into ON-PREM ROUTER1 or ON-PRE
 
 To destroy all online (available) resources, I use
 ```
-i=0; while [ $i -le 25 ]; do ./../spare.sh -D && ./../main.sh -D; printf "%s\n" "round ${i}"; i=$(( i + 1 )); sleep 5; done
+i=0; while [ $i -le 25 ]; do ./../CGWTGWAttach.sh -D && ./../ADVANCEDVPNDEMO.sh -D; printf "%s\n" "round ${i}"; i=$(( i + 1 )); sleep 5; done
 ```
 
 I have to do this because ADVANCEDVPNDEMO.sh won't delete itself until CGWTGWAttach.sh has been completely deleted.
