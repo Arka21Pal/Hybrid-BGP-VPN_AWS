@@ -1,6 +1,10 @@
 # Creating a Hybrid BGP VPN on AWS
 *Please let me know if my scripts break. I will attempt to fix them as long as there are no significant changes "upstream"*.
 
+Edit: You will need `xmlstarlet` for these scripts to function. Please install it alongside the `aws cli`.
+
+---
+
 This project is based off of Adrian Cantrill's wonderful lab on creating a Hybrid IPSEC VPN on redundant BGP tunnels. Most of the work in this project has been to automate the work that would have to be done by hand otherwise.
 
 Link: https://github.com/acantril/learn-cantrill-io-labs/tree/master/aws-hybrid-bgpvpn
