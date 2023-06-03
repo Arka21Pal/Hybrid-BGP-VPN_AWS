@@ -9,7 +9,7 @@ There are some quirks with this automation setup that I will mention first:
 2. There might be an issue where `vtysh -c show ip route` on any of the "on-premises routers" might not yield a BGP route. This does not happen every time and cannot be replicated reliably. Also, the static kernel path shows up every time, as a result of which one could ping both servers (which are in a separate VPC - [refer to picture](https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/aws-hybrid-bgpvpn/02_INSTRUCTIONS/STAGE4%20-%20FINAL%20BGP%20Architecture.png)) from the on-premises routers.
 3. The commands take time to run. To configure FFRouting on the on-premises routers can take anywhere from 15-20 minutes. Do not shutdown/interrupt their progress during this time or the routing protocol might break during installation.
 
-The command to run the project is: 
+The command to run the project is (from `/bin`): 
 ```
 ./ADVANCEDVPNDEMO.sh -d && ./CGWTGWAttach.sh -d && ./CONFIGURATION_IPSEC_BGP.sh
 ```
